@@ -11,6 +11,7 @@ export default async function AdminApplicationsPage() {
     orderBy: { createdAt: "desc" },
     take: 50,
   });
+  type ApplicationItem = (typeof applications)[number];
 
   return (
     <div className="space-y-6">
@@ -38,7 +39,7 @@ export default async function AdminApplicationsPage() {
                 </tr>
               </thead>
               <tbody>
-                {applications.map((app) => (
+                {applications.map((app: ApplicationItem) => (
                   <tr key={app.id} className="border-b hover:bg-gray-50">
                     <td className="p-4">
                       <p className="font-medium">{app.businessName}</p>
