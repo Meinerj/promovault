@@ -54,32 +54,54 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         {/* Search Header */}
         <div className="mb-10">
           <h1 className="text-3xl font-bold text-navy-900">Search Businesses</h1>
-          <form action="/search" method="GET" className="mt-6 flex gap-3">
-            <div className="relative flex-1">
-              <SearchIcon className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                name="q"
-                defaultValue={q || ""}
-                placeholder="Search by name, category, or location..."
-                className="h-12 w-full rounded-lg border border-gray-300 bg-white pl-12 pr-4 text-gray-900 focus:ring-2 focus:ring-brand-400 focus:border-brand-400"
-              />
+          <form action="/search" method="GET" className="mt-6">
+            <div className="flex gap-3">
+              <div className="relative flex-1">
+                <label
+                  htmlFor="search-input"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Search
+                </label>
+                <SearchIcon className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                <input
+                  id="search-input"
+                  type="text"
+                  name="q"
+                  defaultValue={q || ""}
+                  placeholder="Search by name, category, or location..."
+                  className="h-12 w-full rounded-lg border border-gray-300 bg-white pl-12 pr-4 text-gray-900 focus:ring-2 focus:ring-brand-400 focus:border-brand-400"
+                  aria-label="Search businesses by name, category, or location"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="category-select"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Category
+                </label>
+                <select
+                  id="category-select"
+                  name="category"
+                  defaultValue={category || ""}
+                  className="h-12 rounded-lg border border-gray-300 bg-white px-4 text-gray-700 focus:ring-2 focus:ring-brand-400"
+                  aria-label="Filter by category"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.slug}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex items-end">
+                <Button type="submit" size="lg">
+                  Search
+                </Button>
+              </div>
             </div>
-            <select
-              name="category"
-              defaultValue={category || ""}
-              className="h-12 rounded-lg border border-gray-300 bg-white px-4 text-gray-700 focus:ring-2 focus:ring-brand-400"
-            >
-              <option value="">All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.slug}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-            <Button type="submit" size="lg">
-              Search
-            </Button>
           </form>
         </div>
 
