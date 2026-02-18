@@ -38,10 +38,10 @@ export default async function ClientLayout({
         <div className="flex h-16 items-center px-6 border-b">
           <Link href="/client" className="flex items-center space-x-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-navy-900">
-              <span className="text-sm font-bold text-brand-400">P</span>
+              <span className="text-sm font-bold text-brand-400">M</span>
             </div>
             <span className="text-lg font-bold text-navy-900">
-              Promo<span className="text-brand-400">Vault</span>
+              Mind<span className="text-brand-400">Spark.ai</span>
             </span>
           </Link>
         </div>

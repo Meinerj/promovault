@@ -13,7 +13,7 @@ interface SearchPageProps {
 
 export const metadata = {
   title: "Search Businesses",
-  description: "Search and discover premium local businesses on PromoVault.",
+  description: "Search and discover premium local businesses on MindSpark.ai.",
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {

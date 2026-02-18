@@ -9,10 +9,10 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-navy-900">
-            <span className="text-lg font-bold text-brand-400">P</span>
+            <span className="text-lg font-bold text-brand-400">M</span>
           </div>
           <span className="text-xl font-bold text-navy-900">
-            Promo<span className="text-brand-400">Vault</span>
+            Mind<span className="text-brand-400">Spark.ai</span>
           </span>
         </Link>
 
@@ -75,10 +75,10 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-400">
-                <span className="text-sm font-bold text-white">P</span>
+                <span className="text-sm font-bold text-white">M</span>
               </div>
               <span className="text-lg font-bold text-white">
-                Promo<span className="text-brand-400">Vault</span>
+                Mind<span className="text-brand-400">Spark.ai</span>
               </span>
             </Link>
             <p className="text-sm text-gray-400">
@@ -162,7 +162,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} PromoVault. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} MindSpark.ai. All rights reserved.</p>
         </div>
       </div>
     </footer>

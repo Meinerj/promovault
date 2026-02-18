@@ -11,7 +11,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 
 export const metadata = {
   title: "Browse Categories",
-  description: "Browse all business categories on PromoVault. Find exactly what you need.",
+  description: "Browse all business categories on MindSpark.ai. Find exactly what you need.",
 };
 
 export default async function CategoriesPage() {

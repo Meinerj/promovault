@@ -41,10 +41,10 @@ export default async function AdminLayout({
         <div className="flex h-16 items-center px-6 border-b border-white/10">
           <Link href="/admin" className="flex items-center space-x-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500">
-              <span className="text-sm font-bold text-navy-900">P</span>
+              <span className="text-sm font-bold text-navy-900">M</span>
             </div>
             <span className="text-lg font-bold">
-              Promo<span className="text-brand-400">Vault</span>
+              Mind<span className="text-brand-400">Spark.ai</span>
             </span>
           </Link>
         </div>
@@ -79,7 +79,7 @@ export default async function AdminLayout({
       <div className="flex-1 flex flex-col">
         {/* Top bar */}
         <header className="h-16 border-b bg-white flex items-center px-6">
-          <button className="lg:hidden mr-4">
+          <button type="button" className="lg:hidden mr-4" aria-label="Open navigation menu">
             <Menu className="h-6 w-6" />
           </button>
           <h1 className="text-lg font-semibold text-navy-900">Admin Portal</h1>

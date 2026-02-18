@@ -82,7 +82,7 @@ export default async function HomePage() {
               Businesses You Can Trust
             </h1>
             <p className="mt-6 text-lg text-gray-300 sm:text-xl">
-              PromoVault curates and promotes the best businesses in your area.
+              MindSpark.ai curates and promotes the best businesses in your area.
               Every listing is vetted, every business is exceptional.
             </p>
 
@@ -235,7 +235,7 @@ export default async function HomePage() {
         <div className="container-wide">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-navy-900 sm:text-4xl">
-              Why Businesses Choose PromoVault
+              Why Businesses Choose MindSpark.ai
             </h2>
             <p className="mt-3 text-lg text-gray-500">
               More than a directory — we actively promote your business
@@ -254,7 +254,7 @@ export default async function HomePage() {
                 icon: <Shield className="h-8 w-8 text-brand-400" />,
                 title: "Vetted & Trusted",
                 description:
-                  "Every business on PromoVault is vetted for quality. Consumers trust our directory because we maintain high standards.",
+                  "Every business on MindSpark.ai is vetted for quality. Consumers trust our directory because we maintain high standards.",
               },
               {
                 icon: <BarChart3 className="h-8 w-8 text-brand-400" />,
@@ -286,7 +286,7 @@ export default async function HomePage() {
           </h2>
           <p className="mt-4 text-lg text-gray-300">
             Join {stats.orgCount}+ premium businesses already reaching new customers through
-            PromoVault. Apply today and start getting promoted.
+            MindSpark.ai. Apply today and start getting promoted.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link href="/for-businesses">

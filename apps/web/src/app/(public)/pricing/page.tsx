@@ -7,7 +7,7 @@ import { SUBSCRIPTION_TIERS, formatCurrency } from "@/lib/utils";
 
 export const metadata = {
   title: "Pricing",
-  description: "PromoVault pricing plans. Choose the promotion package that fits your business.",
+  description: "MindSpark.ai pricing plans. Choose the promotion package that fits your business.",
 };
 
 export default function PricingPage() {

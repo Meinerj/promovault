@@ -49,7 +49,7 @@ export default function ForBusinessesPage() {
           <CheckCircle className="mx-auto h-16 w-16 text-emerald-500" />
           <h1 className="mt-6 text-3xl font-bold text-navy-900">Application Received!</h1>
           <p className="mt-4 text-lg text-gray-500 max-w-xl mx-auto">
-            Thank you for your interest in PromoVault. Our team will review your application
+            Thank you for your interest in MindSpark.ai. Our team will review your application
             and contact you within 24-48 hours to discuss the best promotion package for your business.
           </p>
           <Link href="/">
@@ -69,7 +69,7 @@ export default function ForBusinessesPage() {
           {/* Left: Sales Copy */}
           <div>
             <h1 className="text-4xl font-bold text-navy-900 sm:text-5xl">
-              Get More Customers with <span className="text-gradient">PromoVault</span>
+              Get More Customers with <span className="text-gradient">MindSpark.ai</span>
             </h1>
             <p className="mt-6 text-lg text-gray-600">
               We don&apos;t just list your business — we actively promote it. Our premium platform
@@ -159,7 +159,7 @@ export default function ForBusinessesPage() {
                     id="message"
                     name="message"
                     rows={4}
-                    placeholder="What does your business do? What are your goals for joining PromoVault?"
+                    placeholder="What does your business do? What are your goals for joining MindSpark.ai?"
                   />
                 </div>
                 <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">

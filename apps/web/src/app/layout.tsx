@@ -3,11 +3,11 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "PromoVault — Discover Premium Local Businesses",
-    template: "%s | PromoVault",
+    default: "MindSpark.ai — Discover Premium Local Businesses",
+    template: "%s | MindSpark.ai",
   },
   description:
-    "PromoVault is the premier directory of vetted, high-quality local businesses. Find trusted professionals, restaurants, and services in your area.",
+    "MindSpark.ai is the premier directory of vetted, high-quality local businesses. Find trusted professionals, restaurants, and services in your area.",
   keywords: [
     "local businesses",
     "business directory",
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "PromoVault",
-    title: "PromoVault — Discover Premium Local Businesses",
+    siteName: "MindSpark.ai",
+    title: "MindSpark.ai — Discover Premium Local Businesses",
     description:
       "The premier directory of vetted, high-quality local businesses. Find trusted professionals, restaurants, and services in your area.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PromoVault — Discover Premium Local Businesses",
+    title: "MindSpark.ai — Discover Premium Local Businesses",
     description:
       "The premier directory of vetted, high-quality local businesses.",
   },
