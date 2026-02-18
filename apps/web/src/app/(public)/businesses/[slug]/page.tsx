@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import {
   MapPin, Phone, Globe, Mail, Clock, Star, ArrowLeft, ExternalLink, Share2,
@@ -64,7 +65,7 @@ export default async function BusinessProfilePage({ params }: PageProps) {
       {/* Hero / Cover */}
       <div className="h-64 bg-gradient-to-br from-navy-800 to-navy-950 relative sm:h-80">
         {org.coverImageUrl && (
-          <img src={org.coverImageUrl} alt={org.name} className="h-full w-full object-cover opacity-60" />
+          <Image src={org.coverImageUrl} alt={org.name} fill className="object-cover opacity-60" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="container-wide absolute bottom-0 left-0 right-0 pb-6">
@@ -73,7 +74,7 @@ export default async function BusinessProfilePage({ params }: PageProps) {
           </Link>
           <div className="flex items-end gap-4">
             {org.logoUrl ? (
-              <img src={org.logoUrl} alt={`${org.name} logo`} className="h-20 w-20 rounded-xl border-4 border-white shadow-lg object-cover bg-white" />
+              <Image src={org.logoUrl} alt={`${org.name} logo`} width={80} height={80} className="h-20 w-20 rounded-xl border-4 border-white shadow-lg object-cover bg-white" />
             ) : (
               <div className="flex h-20 w-20 items-center justify-center rounded-xl border-4 border-white bg-brand-400 shadow-lg">
                 <span className="text-3xl font-bold text-white">{org.name.charAt(0)}</span>
@@ -119,12 +120,14 @@ export default async function BusinessProfilePage({ params }: PageProps) {
                 <CardContent>
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                     {org.images.map((img) => (
-                      <img
-                        key={img.id}
-                        src={img.url}
-                        alt={img.altText || org.name}
-                        className="h-40 w-full rounded-lg object-cover"
-                      />
+                      <div key={img.id} className="relative h-40 w-full">
+                        <Image
+                          src={img.url}
+                          alt={img.altText || org.name}
+                          fill
+                          className="rounded-lg object-cover"
+                        />
+                      </div>
                     ))}
                   </div>
                 </CardContent>

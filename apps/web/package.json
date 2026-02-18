@@ -1,5 +1,5 @@
 {
-  "name": "@promovault/web",
+  "name": "@mindspark/web",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.2.1",
-    "@promovault/database": "workspace:*",
+    "@mindspark/database": "workspace:*",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",
     "@radix-ui/react-dropdown-menu": "^2.1.4",

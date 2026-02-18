@@ -1,5 +1,5 @@
 {
-  "name": "promovault",
+  "name": "mindspark",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -14,7 +14,7 @@
     "db:push": "turbo db:push",
     "db:migrate": "turbo db:migrate",
     "db:seed": "turbo db:seed",
-    "db:studio": "pnpm --filter @promovault/database db:studio",
+    "db:studio": "pnpm --filter @mindspark/database db:studio",
     "clean": "turbo clean",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\""
   },

@@ -1,4 +1,4 @@
-// ─── PromoVault Database Schema ───
+// ─── MindSpark.ai Database Schema ───
 
 generator client {
   provider = "prisma-client-js"
@@ -398,7 +398,7 @@ model AuditLog {
 
 model SiteSettings {
   id              String   @id @default("default")
-  siteName        String   @default("PromoVault") @map("site_name")
+  siteName        String   @default("MindSpark.ai") @map("site_name")
   siteTagline     String?  @map("site_tagline")
   siteDescription String?  @map("site_description") @db.Text
   logoUrl         String?  @map("logo_url")

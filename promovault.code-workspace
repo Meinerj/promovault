@@ -14,7 +14,8 @@
     "files.eol": "\n",
     "editor.formatOnSave": true,
     "typescript.tsdk": "node_modules/typescript/lib",
-    "liveServer.settings.multiRootWorkspaceName": "web"
+    "liveServer.settings.multiRootWorkspaceName": "web",
+    "prisma.pinToPrisma6": true
   },
   "extensions": {
     "recommendations": [

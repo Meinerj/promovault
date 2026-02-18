@@ -63,10 +63,10 @@ async function main() {
   // ─── Create Admin User ───
   const adminPassword = await hash("Admin123!@#", 12);
   const admin = await prisma.user.upsert({
-    where: { email: "admin@promovault.com" },
+    where: { email: "admin@mindspark.ai" },
     update: {},
     create: {
-      email: "admin@promovault.com",
+      email: "admin@mindspark.ai",
       password: adminPassword,
       name: "Platform Admin",
       role: UserRole.SUPER_ADMIN,
@@ -245,7 +245,7 @@ async function main() {
       authorId: admin.id,
       status: BlogPostStatus.PUBLISHED,
       featuredOrgId: org1.id,
-      seoTitle: "Top 10 Best Restaurants in Austin 2026 | PromoVault",
+      seoTitle: "Top 10 Best Restaurants in Austin 2026 | MindSpark.ai",
       seoDescription: "Discover the top 10 must-try restaurants in Austin for 2026. From authentic Italian to modern Tex-Mex, find your next favorite dining spot.",
       publishedAt: new Date(),
     },
@@ -257,10 +257,10 @@ async function main() {
     update: {},
     create: {
       id: "default",
-      siteName: "PromoVault",
+      siteName: "MindSpark.ai",
       siteTagline: "Discover Premium Local Businesses",
-      siteDescription: "PromoVault is the premier directory of vetted, high-quality local businesses. Find trusted professionals, restaurants, and services in your area.",
-      contactEmail: "hello@promovault.com",
+      siteDescription: "MindSpark.ai is the premier directory of vetted, high-quality local businesses. Find trusted professionals, restaurants, and services in your area.",
+      contactEmail: "hello@mindspark.ai",
     },
   });
 

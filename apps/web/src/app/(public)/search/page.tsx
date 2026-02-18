@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Search as SearchIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -48,6 +49,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     orderBy: { sortOrder: "asc" },
   });
 
+  type OrgItem = (typeof organizations)[number];
+  type CatItem = (typeof categories)[number];
+
   return (
     <div className="section-padding">
       <div className="container-wide">
@@ -89,7 +93,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   aria-label="Filter by category"
                 >
                   <option value="">All Categories</option>
-                  {categories.map((cat) => (
+                  {categories.map((cat: CatItem) => (
                     <option key={cat.id} value={cat.slug}>
                       {cat.name}
                     </option>
@@ -123,12 +127,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {organizations.map((org) => (
+            {organizations.map((org: OrgItem) => (
               <Link key={org.id} href={`/businesses/${org.slug}`}>
                 <Card className="group h-full cursor-pointer transition-all hover:shadow-card-hover hover:-translate-y-0.5">
                   <div className="h-40 bg-gradient-to-br from-navy-800 to-navy-900 rounded-t-lg relative">
                     {org.coverImageUrl ? (
-                      <img src={org.coverImageUrl} alt={org.name} className="h-full w-full object-cover rounded-t-lg" />
+                      <Image src={org.coverImageUrl} alt={org.name} fill className="object-cover rounded-t-lg" />
                     ) : (
                       <div className="flex h-full items-center justify-center">
                         <span className="text-4xl font-bold text-brand-400/30">{org.name.charAt(0)}</span>

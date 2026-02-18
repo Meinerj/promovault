@@ -1,13 +1,14 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Search, Star, TrendingUp, Shield, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 
-export const revalidate = 3600; // Revalidate every hour
+
 
 async function getFeaturedBusinesses() {
   return db.organization.findMany({
@@ -66,6 +67,9 @@ export default async function HomePage() {
     getStats(),
   ]);
 
+  type FeaturedItem = (typeof featured)[number];
+  type CategoryItem = (typeof categories)[number];
+
   return (
     <>
       {/* ─── Hero Section ─── */}
@@ -123,7 +127,7 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {categories.map((cat) => (
+            {categories.map((cat: CategoryItem) => (
               <Link key={cat.id} href={`/categories/${cat.slug}`}>
                 <Card className="group cursor-pointer transition-all hover:shadow-card-hover hover:-translate-y-0.5">
                   <CardContent className="flex items-center gap-4 p-5">
@@ -169,16 +173,17 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((org) => (
+            {featured.map((org: FeaturedItem) => (
               <Link key={org.id} href={`/businesses/${org.slug}`}>
                 <Card className="group h-full cursor-pointer overflow-hidden transition-all hover:shadow-card-hover hover:-translate-y-1">
                   {/* Cover Image Placeholder */}
                   <div className="h-48 bg-gradient-to-br from-navy-800 to-navy-900 relative">
                     {org.coverImageUrl ? (
-                      <img
+                      <Image
                         src={org.coverImageUrl}
                         alt={org.name}
-                        className="h-full w-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center">

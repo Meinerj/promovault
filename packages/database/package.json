@@ -1,5 +1,5 @@
 {
-  "name": "@promovault/database",
+  "name": "@mindspark/database",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -10,6 +10,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx src/seed.ts",
     "db:studio": "prisma studio",
+    "build": "prisma generate",
     "clean": "rimraf dist node_modules .turbo"
   },
   "dependencies": {
