@@ -1,0 +1,413 @@
+// ─── PromoVault Database Schema ───
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  BUSINESS_CLIENT
+}
+
+enum OrganizationStatus {
+  PENDING
+  PENDING_PAYMENT
+  ACTIVE
+  APPROVED
+  REJECTED
+  SUSPENDED
+  CHURNED
+}
+
+enum SubscriptionTier {
+  BASIC
+  FEATURED
+  PREMIUM
+  ELITE
+}
+
+enum SubscriptionInterval {
+  MONTHLY
+  ANNUAL
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  CANCELLED
+  TRIALING
+  PAUSED
+}
+
+enum ApplicationStatus {
+  NEW
+  PENDING
+  REVIEWING
+  CONTACTED
+  APPROVED
+  REJECTED
+}
+
+enum LeadType {
+  CONTACT_FORM
+  PHONE_CLICK
+  WEBSITE_CLICK
+  DIRECTIONS_CLICK
+  EMAIL_CLICK
+}
+
+enum BlogPostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ImageType {
+  GALLERY
+  LOGO
+  COVER
+}
+
+enum DeviceType {
+  DESKTOP
+  MOBILE
+  TABLET
+}
+
+// ─── Models ───
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  password        String?
+  name            String?
+  role            UserRole  @default(BUSINESS_CLIENT)
+  organizationId  String?   @map("organization_id")
+  avatarUrl       String?   @map("avatar_url")
+  emailVerifiedAt DateTime? @map("email_verified_at")
+  lastLoginAt     DateTime? @map("last_login_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  ownedOrgs    Organization[] @relation("OrgOwner")
+  blogPosts    BlogPost[]
+  auditLogs    AuditLog[]
+  accounts     Account[]
+  sessions     Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─── Core Business Models ───
+
+model Organization {
+  id               String             @id @default(cuid())
+  name             String
+  slug             String             @unique
+  description      String?            @db.Text
+  shortDescription String?            @map("short_description") @db.VarChar(500)
+  logoUrl          String?            @map("logo_url")
+  coverImageUrl    String?            @map("cover_image_url")
+  website          String?
+  phone            String?
+  email            String?
+  address          String?
+  city             String?
+  state            String?
+  zip              String?
+  country          String?            @default("US")
+  latitude         Decimal?           @db.Decimal(10, 8)
+  longitude        Decimal?           @db.Decimal(11, 8)
+  openHours        Json?              @map("open_hours")
+  socialLinks      Json?              @map("social_links")
+  status           OrganizationStatus @default(PENDING)
+  featured         Boolean            @default(false)
+  featuredOrder    Int?               @map("featured_order")
+  subscriptionTier SubscriptionTier?  @map("subscription_tier")
+  ownerId          String?            @map("owner_id")
+  approvedAt       DateTime?          @map("approved_at")
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
+
+  owner        User?          @relation("OrgOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  users        User[]
+  subscription Subscription?
+  categories   OrganizationCategory[]
+  leads        Lead[]
+  pageViews    PageView[]
+  images       Image[]
+  blogPosts    BlogPost[]             @relation("FeaturedOrganization")
+  offers       Offer[]
+
+  @@index([status])
+  @@index([featured])
+  @@index([city, state])
+  @@index([subscriptionTier])
+  @@map("organizations")
+}
+
+model Category {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String?  @db.Text
+  icon         String?
+  parentId     String?  @map("parent_id")
+  sortOrder    Int      @default(0) @map("sort_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  parent        Category?              @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children      Category[]             @relation("CategoryHierarchy")
+  organizations OrganizationCategory[]
+
+  @@map("categories")
+}
+
+model OrganizationCategory {
+  organizationId String @map("organization_id")
+  categoryId     String @map("category_id")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  category     Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([organizationId, categoryId])
+  @@map("organization_categories")
+}
+
+model Subscription {
+  id                   String               @id @default(cuid())
+  organizationId       String               @unique @map("organization_id")
+  stripeSubscriptionId String?              @unique @map("stripe_subscription_id")
+  stripeCustomerId     String?              @unique @map("stripe_customer_id")
+  tier                 SubscriptionTier
+  priceCents           Int                  @default(0) @map("price_cents")
+  currency             String               @default("usd")
+  interval             SubscriptionInterval @default(MONTHLY)
+  status               SubscriptionStatus   @default(ACTIVE)
+  currentPeriodStart   DateTime?            @map("current_period_start")
+  currentPeriodEnd     DateTime?            @map("current_period_end")
+  cancelledAt          DateTime?            @map("cancelled_at")
+  createdAt            DateTime             @default(now()) @map("created_at")
+  updatedAt            DateTime             @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([tier])
+  @@map("subscriptions")
+}
+
+model Lead {
+  id             String   @id @default(cuid())
+  organizationId String   @map("organization_id")
+  type           LeadType @default(CONTACT_FORM)
+  name           String?
+  email          String?
+  phone          String?
+  message        String?  @db.Text
+  sourcePage     String?  @map("source_page")
+  ipAddress      String?  @map("ip_address")
+  userAgent      String?  @map("user_agent") @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([createdAt])
+  @@index([type])
+  @@map("leads")
+}
+
+model PageView {
+  id             BigInt      @id @default(autoincrement())
+  organizationId String?     @map("organization_id")
+  path           String
+  referrer       String?
+  ipHash         String?     @map("ip_hash")
+  userAgent      String?     @map("user_agent") @db.Text
+  deviceType     DeviceType? @map("device_type")
+  country        String?
+  city           String?
+  sessionId      String?     @map("session_id")
+  createdAt      DateTime    @default(now()) @map("created_at")
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([createdAt])
+  @@index([path])
+  @@map("page_views")
+}
+
+model BlogPost {
+  id             String         @id @default(cuid())
+  title          String
+  slug           String         @unique
+  content        String         @db.Text
+  excerpt        String?        @db.VarChar(500)
+  coverImageUrl  String?        @map("cover_image_url")
+  authorId       String         @map("author_id")
+  status         BlogPostStatus @default(DRAFT)
+  featuredOrgId  String?        @map("featured_org_id")
+  seoTitle       String?        @map("seo_title") @db.VarChar(255)
+  seoDescription String?        @map("seo_description") @db.VarChar(500)
+  publishedAt    DateTime?      @map("published_at")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  author      User          @relation(fields: [authorId], references: [id])
+  featuredOrg Organization? @relation("FeaturedOrganization", fields: [featuredOrgId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([publishedAt])
+  @@map("blog_posts")
+}
+
+model Application {
+  id           String            @id @default(cuid())
+  businessName String            @map("business_name")
+  contactName  String            @map("contact_name")
+  email        String
+  phone        String?
+  website      String?
+  category     String?
+  description  String?           @db.Text
+  message      String?           @db.Text
+  address      String?
+  city         String?
+  state        String?
+  zip          String?
+  status       ApplicationStatus @default(NEW)
+  adminNotes   String?           @map("admin_notes") @db.Text
+  reviewedBy   String?           @map("reviewed_by")
+  reviewedAt   DateTime?         @map("reviewed_at")
+  createdAt    DateTime          @default(now()) @map("created_at")
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("applications")
+}
+
+model Image {
+  id             String    @id @default(cuid())
+  organizationId String    @map("organization_id")
+  url            String
+  altText        String?   @map("alt_text")
+  sortOrder      Int       @default(0) @map("sort_order")
+  type           ImageType @default(GALLERY)
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("images")
+}
+
+model Offer {
+  id             String    @id @default(cuid())
+  organizationId String    @map("organization_id")
+  title          String
+  description    String?   @db.Text
+  code           String?
+  discountType   String?   @map("discount_type")
+  discountValue  String?   @map("discount_value")
+  startsAt       DateTime? @map("starts_at")
+  expiresAt      DateTime? @map("expires_at")
+  isActive       Boolean   @default(true) @map("is_active")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([isActive])
+  @@map("offers")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?  @map("user_id")
+  action     String
+  entity     String?
+  entityType String?  @map("entity_type")
+  entityId   String?  @map("entity_id")
+  details    Json?
+  oldValue   Json?    @map("old_value")
+  newValue   Json?    @map("new_value")
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent") @db.Text
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model SiteSettings {
+  id              String   @id @default("default")
+  siteName        String   @default("PromoVault") @map("site_name")
+  siteTagline     String?  @map("site_tagline")
+  siteDescription String?  @map("site_description") @db.Text
+  logoUrl         String?  @map("logo_url")
+  socialLinksJson Json?    @map("social_links_json")
+  contactEmail    String?  @map("contact_email")
+  contactPhone    String?  @map("contact_phone")
+  analyticsId     String?  @map("analytics_id")
+  customCss       String?  @map("custom_css") @db.Text
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}
